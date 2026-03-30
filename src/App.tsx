@@ -29,7 +29,9 @@ import {
   X,
   Edit,
   Trash2,
-  Bell
+  Bell,
+  Play,
+  MessageSquare
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -109,6 +111,8 @@ export default function App() {
 
   // Customizable Image URLs (Mocked)
   const [appLogo, setAppLogo] = useState('https://picsum.photos/seed/store/100/100');
+  const [videoLink, setVideoLink] = useState('https://t.me/video_tutorial');
+  const [adminSupportLink, setAdminSupportLink] = useState('https://t.me/admin_support');
   const [serviceLogos, setServiceLogos] = useState({
     vpn: 'https://picsum.photos/seed/vpnicon/100/100',
     fb: 'https://picsum.photos/seed/fbicon/100/100',
@@ -136,6 +140,8 @@ export default function App() {
           setDeveloperTelegram(settingsData.developer_telegram);
           setDeveloperPhone(settingsData.developer_phone);
           setTelegramChannel(settingsData.telegram_channel);
+          setVideoLink(settingsData.video_link || 'https://t.me/video_tutorial');
+          setAdminSupportLink(settingsData.admin_support_link || 'https://t.me/admin_support');
           setServiceLogos({
             vpn: settingsData.vpn_logo || 'https://picsum.photos/seed/vpnicon/100/100',
             fb: settingsData.fb_logo || 'https://picsum.photos/seed/fbicon/100/100',
@@ -155,6 +161,8 @@ export default function App() {
             developer_telegram: '@Devoloper_Emon',
             developer_phone: '+880123456789',
             telegram_channel: 'https://t.me/your_admin_id',
+            video_link: 'https://t.me/video_tutorial',
+            admin_support_link: 'https://t.me/admin_support',
             vpn_logo: 'https://picsum.photos/seed/vpnicon/100/100',
             fb_logo: 'https://picsum.photos/seed/fbicon/100/100',
             ig_logo: 'https://picsum.photos/seed/igicon/100/100',
@@ -173,6 +181,8 @@ export default function App() {
           setDeveloperTelegram(initialSettings.developer_telegram);
           setDeveloperPhone(initialSettings.developer_phone);
           setTelegramChannel(initialSettings.telegram_channel);
+          setVideoLink(initialSettings.video_link || 'https://t.me/video_tutorial');
+          setAdminSupportLink(initialSettings.admin_support_link || 'https://t.me/admin_support');
           setPaymentMethods(initialSettings.payment_methods);
           setServiceLogos({
             vpn: initialSettings.vpn_logo,
@@ -817,17 +827,23 @@ export default function App() {
               {activeTab === 'help' && (
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 gap-4">
-                    <button className="glass p-6 rounded-3xl flex flex-col items-center space-y-2">
-                      <div className="w-12 h-12 blue-gradient rounded-2xl flex items-center justify-center">
-                        <ShoppingBag className="text-white" />
+                    <button 
+                      onClick={() => window.open(videoLink, '_blank')}
+                      className="glass p-6 rounded-3xl flex flex-col items-center space-y-2"
+                    >
+                      <div className="w-12 h-12 bg-red-500/20 rounded-2xl flex items-center justify-center">
+                        <Play className="text-red-500" />
                       </div>
-                      <span className="font-bold">How to Buy</span>
+                      <span className="font-bold">ভিডিও দেখুন</span>
                     </button>
-                    <button className="glass p-6 rounded-3xl flex flex-col items-center space-y-2">
-                      <div className="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center">
-                        <MessageCircle className="text-white" />
+                    <button 
+                      onClick={() => window.open(adminSupportLink, '_blank')}
+                      className="glass p-6 rounded-3xl flex flex-col items-center space-y-2"
+                    >
+                      <div className="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center">
+                        <MessageSquare className="text-blue-500" />
                       </div>
-                      <span className="font-bold">Chat Admin</span>
+                      <span className="font-bold">এডমিন সাপোর্ট</span>
                     </button>
                   </div>
 
@@ -1085,6 +1101,12 @@ export default function App() {
             setProfile={setProfile}
             appLogo={appLogo}
             setAppLogo={setAppLogo}
+            videoLink={videoLink}
+            setVideoLink={setVideoLink}
+            adminSupportLink={adminSupportLink}
+            setAdminSupportLink={setAdminSupportLink}
+            serviceLogos={serviceLogos}
+            setServiceLogos={setServiceLogos}
           />
         )}
       </AnimatePresence>
@@ -1109,7 +1131,10 @@ function AdminPanel({
   orders, setOrders,
   allUsers, setAllUsers,
   profile, setProfile,
-  appLogo, setAppLogo
+  appLogo, setAppLogo,
+  videoLink, setVideoLink,
+  adminSupportLink, setAdminSupportLink,
+  serviceLogos, setServiceLogos
 }: any) {
   const [adminTab, setAdminTab] = useState<'settings' | 'services' | 'payments' | 'orders' | 'users'>('settings');
 
@@ -1208,6 +1233,8 @@ function AdminPanel({
         developer_telegram: developerTelegram,
         developer_phone: developerPhone,
         telegram_channel: telegramChannel,
+        video_link: videoLink,
+        admin_support_link: adminSupportLink,
         payment_methods: paymentMethods,
         vpn_logo: serviceLogos.vpn,
         fb_logo: serviceLogos.fb,
@@ -1258,6 +1285,14 @@ function AdminPanel({
             <AdminInput label="Developer Phone" value={developerPhone} onChange={setDeveloperPhone} />
             <AdminInput label="Telegram Channel Link" value={telegramChannel} onChange={setTelegramChannel} />
             
+            <div className="pt-4 border-t border-white/10">
+              <h3 className="font-bold text-sm opacity-60 mb-3 uppercase tracking-wider">Help Section Links</h3>
+              <div className="grid grid-cols-1 gap-3">
+                <AdminInput label="Video Tutorial Link" value={videoLink} onChange={setVideoLink} />
+                <AdminInput label="Admin Support Link" value={adminSupportLink} onChange={setAdminSupportLink} />
+              </div>
+            </div>
+
             <div className="pt-4 border-t border-white/10">
               <h3 className="font-bold text-sm opacity-60 mb-3 uppercase tracking-wider">Service Logos (Home Page)</h3>
               <div className="grid grid-cols-1 gap-3">
