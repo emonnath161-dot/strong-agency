@@ -110,10 +110,10 @@ export default function App() {
   // Customizable Image URLs (Mocked)
   const [appLogo, setAppLogo] = useState('https://picsum.photos/seed/store/100/100');
   const [serviceLogos, setServiceLogos] = useState({
-    vpn: 'https://i.postimg.cc/8PZFcJp9/images-(12).jpg',
-    fb: 'png'ttps://i.postimg.cc/fR1vrg9t/images-(5).png',
-    ig: 'https://i.postimg.cc/L4yLW0cv/download-(2).jpg',
-    smm: 'https://i.postimg.cc/vmc5b75v/images-(11).jpg'
+    vpn: 'https://picsum.photos/seed/vpnicon/100/100',
+    fb: 'https://picsum.photos/seed/fbicon/100/100',
+    ig: 'https://picsum.photos/seed/igicon/100/100',
+    smm: 'https://picsum.photos/seed/smmicon/100/100'
   });
   const [paymentLogos, setPaymentLogos] = useState({
     Bkash: 'https://picsum.photos/seed/bkash/100/100',
@@ -136,6 +136,12 @@ export default function App() {
           setDeveloperTelegram(settingsData.developer_telegram);
           setDeveloperPhone(settingsData.developer_phone);
           setTelegramChannel(settingsData.telegram_channel);
+          setServiceLogos({
+            vpn: settingsData.vpn_logo || 'https://picsum.photos/seed/vpnicon/100/100',
+            fb: settingsData.fb_logo || 'https://picsum.photos/seed/fbicon/100/100',
+            ig: settingsData.ig_logo || 'https://picsum.photos/seed/igicon/100/100',
+            smm: settingsData.smm_logo || 'https://picsum.photos/seed/smmicon/100/100'
+          });
           if (settingsData.payment_methods) {
             setPaymentMethods(settingsData.payment_methods);
           }
@@ -149,6 +155,10 @@ export default function App() {
             developer_telegram: '@Devoloper_Emon',
             developer_phone: '+880123456789',
             telegram_channel: 'https://t.me/your_admin_id',
+            vpn_logo: 'https://picsum.photos/seed/vpnicon/100/100',
+            fb_logo: 'https://picsum.photos/seed/fbicon/100/100',
+            ig_logo: 'https://picsum.photos/seed/igicon/100/100',
+            smm_logo: 'https://picsum.photos/seed/smmicon/100/100',
             payment_methods: [
               { id: 'bkash', name: 'Bkash', number: '01700000000', logo: 'https://picsum.photos/seed/bkash/100/100', color: 'bg-pink-500' },
               { id: 'nagad', name: 'Nagad', number: '01800000000', logo: 'https://picsum.photos/seed/nagad/100/100', color: 'bg-orange-500' },
@@ -164,6 +174,12 @@ export default function App() {
           setDeveloperPhone(initialSettings.developer_phone);
           setTelegramChannel(initialSettings.telegram_channel);
           setPaymentMethods(initialSettings.payment_methods);
+          setServiceLogos({
+            vpn: initialSettings.vpn_logo,
+            fb: initialSettings.fb_logo,
+            ig: initialSettings.ig_logo,
+            smm: initialSettings.smm_logo
+          });
         }
 
         // Fetch Services
@@ -1192,11 +1208,15 @@ function AdminPanel({
         developer_telegram: developerTelegram,
         developer_phone: developerPhone,
         telegram_channel: telegramChannel,
-        payment_methods: paymentMethods
+        payment_methods: paymentMethods,
+        vpn_logo: serviceLogos.vpn,
+        fb_logo: serviceLogos.fb,
+        ig_logo: serviceLogos.ig,
+        smm_logo: serviceLogos.smm
       }]);
 
       if (error) throw error;
-      alert("সেটিংস সেভ করা হয়েছে।");
+      alert("সেটিংস সফলভাবে সেভ হয়েছে!");
     } catch (error) {
       console.error("Error saving settings:", error);
       alert("সেটিংস সেভ করতে সমস্যা হয়েছে।");
@@ -1237,9 +1257,20 @@ function AdminPanel({
             <AdminInput label="Developer Telegram" value={developerTelegram} onChange={setDeveloperTelegram} />
             <AdminInput label="Developer Phone" value={developerPhone} onChange={setDeveloperPhone} />
             <AdminInput label="Telegram Channel Link" value={telegramChannel} onChange={setTelegramChannel} />
+            
+            <div className="pt-4 border-t border-white/10">
+              <h3 className="font-bold text-sm opacity-60 mb-3 uppercase tracking-wider">Service Logos (Home Page)</h3>
+              <div className="grid grid-cols-1 gap-3">
+                <AdminInput label="VPN Logo URL" value={serviceLogos.vpn} onChange={(val) => setServiceLogos(prev => ({ ...prev, vpn: val }))} />
+                <AdminInput label="Facebook Logo URL" value={serviceLogos.fb} onChange={(val) => setServiceLogos(prev => ({ ...prev, fb: val }))} />
+                <AdminInput label="Instagram Logo URL" value={serviceLogos.ig} onChange={(val) => setServiceLogos(prev => ({ ...prev, ig: val }))} />
+                <AdminInput label="SMM Logo URL" value={serviceLogos.smm} onChange={(val) => setServiceLogos(prev => ({ ...prev, smm: val }))} />
+              </div>
+            </div>
+
             <button 
               onClick={saveSettings}
-              className="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg"
+              className="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg mt-4"
             >
               Save All Settings
             </button>
