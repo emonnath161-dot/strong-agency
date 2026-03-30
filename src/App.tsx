@@ -110,10 +110,10 @@ export default function App() {
   // Customizable Image URLs (Mocked)
   const [appLogo, setAppLogo] = useState('https://picsum.photos/seed/store/100/100');
   const [serviceLogos, setServiceLogos] = useState({
-    vpn: 'https://picsum.photos/seed/vpnicon/100/100',
-    fb: 'https://picsum.photos/seed/fbicon/100/100',
-    ig: 'https://picsum.photos/seed/igicon/100/100',
-    smm: 'https://picsum.photos/seed/smmicon/100/100'
+    vpn: 'https://i.postimg.cc/8PZFcJp9/images-(12).jpg',
+    fb: 'png'ttps://i.postimg.cc/fR1vrg9t/images-(5).png',
+    ig: 'https://i.postimg.cc/L4yLW0cv/download-(2).jpg',
+    smm: 'https://i.postimg.cc/vmc5b75v/images-(11).jpg'
   });
   const [paymentLogos, setPaymentLogos] = useState({
     Bkash: 'https://picsum.photos/seed/bkash/100/100',
