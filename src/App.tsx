@@ -567,7 +567,7 @@ export default function App() {
                         <div>
                           <div className="flex items-center space-x-2">
                             <h3 className="font-bold">{vpn.name}</h3>
-                            <span className={cn("text-[8px] px-1.5 py-0.5 rounded-full font-bold uppercase", vpn.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
+                            <span className={cn("text-[10px] px-2.5 py-1 rounded-full font-bold uppercase", vpn.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
                               {vpn.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
                             </span>
                           </div>
@@ -577,11 +577,10 @@ export default function App() {
                       <div className="flex flex-col items-end">
                         <span className="font-bold text-primary mb-2">৳{vpn.price}</span>
                         <div className="flex space-x-2">
-                          <button onClick={() => setSubPage(null)} className="px-3 py-1 text-xs rounded-lg bg-red-500/20 text-red-500">বাতিল</button>
                           <button 
                             disabled={vpn.isAvailable === false}
                             onClick={() => handleBuy(vpn)} 
-                            className={cn("px-3 py-1 text-xs rounded-lg text-white", vpn.isAvailable !== false ? "bg-primary" : "bg-slate-500 opacity-50 cursor-not-allowed")}
+                            className={cn("px-6 py-2 text-sm rounded-xl text-white font-bold", vpn.isAvailable !== false ? "bg-primary shadow-lg shadow-primary/20" : "bg-slate-500 opacity-50 cursor-not-allowed")}
                           >
                             কিনুন
                           </button>
@@ -600,7 +599,7 @@ export default function App() {
                       <div>
                         <div className="flex items-center space-x-2">
                           <h3 className="font-bold">{fb.name}</h3>
-                          <span className={cn("text-[8px] px-1.5 py-0.5 rounded-full font-bold uppercase", fb.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
+                          <span className={cn("text-[10px] px-2.5 py-1 rounded-full font-bold uppercase", fb.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
                             {fb.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
                           </span>
                         </div>
@@ -609,11 +608,10 @@ export default function App() {
                       <div className="flex flex-col items-end">
                         <span className="font-bold text-primary mb-2">৳{fb.price}</span>
                         <div className="flex space-x-2">
-                          <button onClick={() => setSubPage(null)} className="px-3 py-1 text-xs rounded-lg bg-red-500/20 text-red-500">বাতিল</button>
                           <button 
                             disabled={fb.isAvailable === false}
                             onClick={() => handleBuy(fb)} 
-                            className={cn("px-3 py-1 text-xs rounded-lg text-white", fb.isAvailable !== false ? "bg-primary" : "bg-slate-500 opacity-50 cursor-not-allowed")}
+                            className={cn("px-6 py-2 text-sm rounded-xl text-white font-bold", fb.isAvailable !== false ? "bg-primary shadow-lg shadow-primary/20" : "bg-slate-500 opacity-50 cursor-not-allowed")}
                           >
                             কিনুন
                           </button>
@@ -632,7 +630,7 @@ export default function App() {
                       <div>
                         <div className="flex items-center space-x-2">
                           <h3 className="font-bold">{ig.name}</h3>
-                          <span className={cn("text-[8px] px-1.5 py-0.5 rounded-full font-bold uppercase", ig.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
+                          <span className={cn("text-[10px] px-2.5 py-1 rounded-full font-bold uppercase", ig.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
                             {ig.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
                           </span>
                         </div>
@@ -641,11 +639,10 @@ export default function App() {
                       <div className="flex flex-col items-end">
                         <span className="font-bold text-primary mb-2">৳{ig.price}</span>
                         <div className="flex space-x-2">
-                          <button onClick={() => setSubPage(null)} className="px-3 py-1 text-xs rounded-lg bg-red-500/20 text-red-500">বাতিল</button>
                           <button 
                             disabled={ig.isAvailable === false}
                             onClick={() => handleBuy(ig)} 
-                            className={cn("px-3 py-1 text-xs rounded-lg text-white", ig.isAvailable !== false ? "bg-primary" : "bg-slate-500 opacity-50 cursor-not-allowed")}
+                            className={cn("px-6 py-2 text-sm rounded-xl text-white font-bold", ig.isAvailable !== false ? "bg-primary shadow-lg shadow-primary/20" : "bg-slate-500 opacity-50 cursor-not-allowed")}
                           >
                             কিনুন
                           </button>
@@ -663,7 +660,7 @@ export default function App() {
                     <div key={smm.id} className="glass p-3 rounded-xl flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <span className="font-medium">{smm.name}</span>
-                        <span className={cn("text-[7px] px-1 py-0.5 rounded-full font-bold uppercase", smm.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
+                        <span className={cn("text-[10px] px-2.5 py-1 rounded-full font-bold uppercase", smm.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
                           {smm.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
                         </span>
                       </div>
@@ -672,9 +669,9 @@ export default function App() {
                         <button 
                           disabled={smm.isAvailable === false}
                           onClick={() => handleBuy(smm)} 
-                          className={cn("px-4 py-1 text-white text-xs rounded-lg flex items-center", smm.isAvailable !== false ? "bg-primary" : "bg-slate-500 opacity-50 cursor-not-allowed")}
+                          className={cn("px-6 py-2 text-white text-sm rounded-xl font-bold flex items-center shadow-lg shadow-primary/20", smm.isAvailable !== false ? "bg-primary" : "bg-slate-500 opacity-50 cursor-not-allowed")}
                         >
-                          কিনুন <ArrowRight className="w-3 h-3 ml-1" />
+                          কিনুন <ArrowRight className="w-4 h-4 ml-1" />
                         </button>
                       </div>
                     </div>
@@ -1359,6 +1356,12 @@ function AdminPanel({
                 />
               </div>
             ))}
+            <button 
+              onClick={saveSettings}
+              className="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg mt-4"
+            >
+              Save Payment Methods
+            </button>
           </div>
         )}
 
