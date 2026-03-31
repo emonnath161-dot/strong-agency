@@ -58,6 +58,9 @@ export default function App() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [showAddFund, setShowAddFund] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [editDisplayName, setEditDisplayName] = useState('');
+  const [editPhotoUrl, setEditPhotoUrl] = useState('');
   const [fundAmount, setFundAmount] = useState('');
   const [paymentStep, setPaymentStep] = useState(1);
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
@@ -354,6 +357,30 @@ export default function App() {
     } catch (error: any) {
       console.error("Error handling profile:", error);
       alert(`প্রোফাইল প্রসেস করতে সমস্যা হয়েছে: ${error.message || 'Unknown error'}`);
+    }
+  };
+
+  const handleUpdateProfile = async () => {
+    if (!profile) return;
+    try {
+      const { error } = await supabase
+        .from('users')
+        .update({
+          display_name: editDisplayName,
+          photo_url: editPhotoUrl
+        })
+        .eq('telegram_username', profile.telegramUsername);
+
+      if (error) throw error;
+
+      const updatedProfile = { ...profile, displayName: editDisplayName, photoUrl: editPhotoUrl };
+      setProfile(updatedProfile);
+      setAllUsers(prev => prev.map(u => u.telegramUsername === profile.telegramUsername ? updatedProfile : u));
+      setShowEditProfile(false);
+      alert('প্রোফাইল আপডেট হয়েছে!');
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert('প্রোফাইল আপডেট করতে সমস্যা হয়েছে।');
     }
   };
 
@@ -815,15 +842,32 @@ export default function App() {
                               </div>
                             </div>
                           </div>
-                          <button 
-                            onClick={() => setShowAdminPanel(true)}
-                            className={cn(
-                              "w-10 h-10 rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90",
-                              isDarkMode ? "bg-white/5 text-white/40" : "bg-slate-100 text-slate-400"
+                          <div className="flex space-x-2">
+                            <button 
+                              onClick={() => {
+                                setEditDisplayName(profile.displayName);
+                                setEditPhotoUrl(profile.photoUrl);
+                                setShowEditProfile(true);
+                              }}
+                              className={cn(
+                                "w-10 h-10 rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90",
+                                isDarkMode ? "bg-white/5 text-white/40" : "bg-slate-100 text-slate-400"
+                              )}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            {isAdmin && (
+                              <button 
+                                onClick={() => setShowAdminPanel(true)}
+                                className={cn(
+                                  "w-10 h-10 rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90",
+                                  isDarkMode ? "bg-white/5 text-white/40" : "bg-slate-100 text-slate-400"
+                                )}
+                              >
+                                <Settings className="w-5 h-5" />
+                              </button>
                             )}
-                          >
-                            <Settings className="w-5 h-5" />
-                          </button>
+                          </div>
                         </div>
                         
                         <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
@@ -963,7 +1007,7 @@ export default function App() {
 
                   <button 
                     onClick={() => window.open(telegramChannel, '_blank')}
-                    className="w-full blue-gradient p-4 rounded-2xl font-bold flex items-center justify-center space-x-2 shadow-lg"
+                    className="w-full bg-sky-500 p-4 rounded-2xl font-black text-white flex items-center justify-center space-x-2 shadow-lg shadow-sky-500/30 hover:bg-sky-600 transition-all active:scale-95"
                   >
                     <Send className="w-5 h-5" />
                     <span>Join Our Telegram Channel</span>
@@ -1000,7 +1044,7 @@ export default function App() {
                   {isAdmin && (
                     <button 
                       onClick={() => setShowAdminPanel(true)}
-                      className="w-full py-4 bg-red-500 text-white rounded-2xl font-bold flex items-center justify-center space-x-2 shadow-lg hover:bg-red-600 transition-colors"
+                      className="w-full py-4 premium-gradient text-white rounded-2xl font-black flex items-center justify-center space-x-2 shadow-lg shadow-primary/30 hover:opacity-90 transition-all active:scale-95"
                     >
                       <Settings className="w-5 h-5" />
                       <span>Admin Panel</span>
@@ -1014,10 +1058,10 @@ export default function App() {
       </main>
 
       {/* Navigation */}
-      <nav className="fixed bottom-6 left-0 right-0 z-50 px-6">
+      <nav className="fixed bottom-0 left-0 right-0 z-50">
         <div className={cn(
-          "max-w-md mx-auto p-2 rounded-[2.5rem] flex justify-between items-center gap-1 shadow-2xl border backdrop-blur-2xl",
-          isDarkMode ? "bg-slate-900/90 border-white/10" : "bg-white/90 border-slate-200"
+          "w-full p-2 flex justify-between items-center gap-1 shadow-[0_-8px_30px_rgb(0,0,0,0.12)] border-t backdrop-blur-2xl",
+          isDarkMode ? "bg-slate-900/95 border-white/5" : "bg-white/95 border-slate-200"
         )}>
           <NavButton isDarkMode={isDarkMode} active={activeTab === 'home'} icon={<Home />} label="Home" onClick={() => { setActiveTab('home'); setSubPage(null); }} />
           <NavButton isDarkMode={isDarkMode} active={activeTab === 'wallet'} icon={<Wallet />} label="Wallet" onClick={() => { setActiveTab('wallet'); setSubPage(null); }} />
@@ -1056,6 +1100,52 @@ export default function App() {
                 className="w-full py-4 blue-gradient text-white rounded-2xl font-bold shadow-lg"
               >
                 সাবমিট করুন
+              </button>
+            </motion.div>
+          </div>
+        )}
+
+        {showEditProfile && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }}
+              onClick={() => setShowEditProfile(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className={cn("relative w-full max-w-xs p-6 rounded-3xl shadow-2xl z-10", isDarkMode ? "bg-slate-900" : "bg-white")}
+            >
+              <h2 className="text-xl font-bold mb-4">প্রোফাইল এডিট</h2>
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="text-xs font-bold opacity-50 mb-1 block">নাম</label>
+                  <input 
+                    type="text" 
+                    value={editDisplayName}
+                    onChange={(e) => setEditDisplayName(e.target.value)}
+                    className="w-full p-4 rounded-2xl glass border-2 border-primary/20 outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold opacity-50 mb-1 block">ফটো ইউআরএল</label>
+                  <input 
+                    type="text" 
+                    value={editPhotoUrl}
+                    onChange={(e) => setEditPhotoUrl(e.target.value)}
+                    className="w-full p-4 rounded-2xl glass border-2 border-primary/20 outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+              </div>
+              <button 
+                onClick={handleUpdateProfile}
+                className="w-full py-4 blue-gradient text-white rounded-2xl font-bold shadow-lg"
+              >
+                আপডেট করুন
               </button>
             </motion.div>
           </div>
@@ -1981,7 +2071,7 @@ function NavButton({ active, icon, label, onClick, isDarkMode }: { active: boole
     <button 
       onClick={onClick}
       className={cn(
-        "relative flex-1 flex flex-col items-center py-3 px-1 rounded-2xl transition-all duration-500",
+        "relative flex-1 flex flex-col items-center py-3 px-1 transition-all duration-500",
         active 
           ? "text-primary scale-110" 
           : (isDarkMode ? "text-slate-400 hover:text-slate-200" : "text-slate-500 hover:text-slate-900")
@@ -1990,7 +2080,7 @@ function NavButton({ active, icon, label, onClick, isDarkMode }: { active: boole
       {active && (
         <motion.div 
           layoutId="nav-active"
-          className="absolute inset-0 bg-primary/10 rounded-2xl -z-10"
+          className="absolute inset-0 bg-primary/10 -z-10"
           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
         />
       )}
