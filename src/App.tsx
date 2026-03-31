@@ -614,11 +614,17 @@ export default function App() {
                       <div className="flex items-center space-x-4">
                         <div className="relative">
                           <img src={vpn.image} alt={vpn.name} className="w-14 h-14 rounded-2xl object-cover shadow-lg" referrerPolicy="no-referrer" />
-                          <div className={cn("absolute -top-1 -right-1 w-4 h-4 rounded-full border-2 border-slate-950", vpn.isAvailable !== false ? "bg-green-500" : "bg-red-500")} />
                         </div>
                         <div>
-                          <h3 className="font-black text-lg tracking-tight leading-none mb-1">{vpn.name}</h3>
-                          <p className="text-[10px] uppercase tracking-widest font-bold opacity-40">Premium Account</p>
+                          <h3 className="font-black text-lg tracking-tight leading-none mb-2">{vpn.name}</h3>
+                          <div className={cn(
+                            "inline-flex items-center px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-tighter border",
+                            vpn.isAvailable !== false 
+                              ? "bg-green-500/10 text-green-500 border-green-500/20" 
+                              : "bg-red-500/10 text-red-500 border-red-500/20"
+                          )}>
+                            {vpn.isAvailable !== false ? "এভেলএবেল" : "এভেলএবেল না"}
+                          </div>
                         </div>
                       </div>
                       <div className="flex flex-col items-end">
@@ -659,11 +665,15 @@ export default function App() {
                           <Send className="w-7 h-7 text-blue-500" />
                         </div>
                         <div>
-                          <div className="flex items-center space-x-2 mb-1">
-                            <h3 className="font-black text-lg tracking-tight leading-none">{fb.name}</h3>
-                            <div className={cn("w-2 h-2 rounded-full", fb.isAvailable !== false ? "bg-green-500" : "bg-red-500")} />
+                          <h3 className="font-black text-lg tracking-tight leading-none mb-2">{fb.name}</h3>
+                          <div className={cn(
+                            "inline-flex items-center px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-tighter border",
+                            fb.isAvailable !== false 
+                              ? "bg-green-500/10 text-green-500 border-green-500/20" 
+                              : "bg-red-500/10 text-red-500 border-red-500/20"
+                          )}>
+                            {fb.isAvailable !== false ? "এভেলএবেল" : "এভেলএবেল না"}
                           </div>
-                          <p className="text-[10px] uppercase tracking-widest font-bold opacity-40">Verified Account</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-end">
@@ -704,11 +714,15 @@ export default function App() {
                           <MessageCircle className="w-7 h-7 text-pink-500" />
                         </div>
                         <div>
-                          <div className="flex items-center space-x-2 mb-1">
-                            <h3 className="font-black text-lg tracking-tight leading-none">{ig.name}</h3>
-                            <div className={cn("w-2 h-2 rounded-full", ig.isAvailable !== false ? "bg-green-500" : "bg-red-500")} />
+                          <h3 className="font-black text-lg tracking-tight leading-none mb-2">{ig.name}</h3>
+                          <div className={cn(
+                            "inline-flex items-center px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-tighter border",
+                            ig.isAvailable !== false 
+                              ? "bg-green-500/10 text-green-500 border-green-500/20" 
+                              : "bg-red-500/10 text-red-500 border-red-500/20"
+                          )}>
+                            {ig.isAvailable !== false ? "এভেলএবেল" : "এভেলএবেল না"}
                           </div>
-                          <p className="text-[10px] uppercase tracking-widest font-bold opacity-40">Old Account</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-end">
@@ -749,11 +763,15 @@ export default function App() {
                           <Plus className="w-6 h-6 text-purple-500" />
                         </div>
                         <div>
-                          <div className="flex items-center space-x-2 mb-1">
-                            <h3 className="font-black text-base tracking-tight leading-none">{smm.name}</h3>
-                            <div className={cn("w-2 h-2 rounded-full", smm.isAvailable !== false ? "bg-green-500" : "bg-red-500")} />
+                          <h3 className="font-black text-base tracking-tight leading-none mb-2">{smm.name}</h3>
+                          <div className={cn(
+                            "inline-flex items-center px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-tighter border",
+                            smm.isAvailable !== false 
+                              ? "bg-green-500/10 text-green-500 border-green-500/20" 
+                              : "bg-red-500/10 text-red-500 border-red-500/20"
+                          )}>
+                            {smm.isAvailable !== false ? "এভেলএবেল" : "এভেলএবেল না"}
                           </div>
-                          <p className="text-[10px] uppercase tracking-widest font-bold opacity-40">Instant Delivery</p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-4">
@@ -895,10 +913,34 @@ export default function App() {
                   <div>
                     <p className="text-sm font-bold opacity-60 mb-4 uppercase tracking-widest">অ্যাভেলেবেল সার্ভিস</p>
                     <div className="space-y-3">
-                      <ServiceCard isDarkMode={isDarkMode} image={serviceLogos.vpn} title="VPN সেল" onClick={() => setSubPage('vpn')} />
-                      <ServiceCard isDarkMode={isDarkMode} image={serviceLogos.fb} title="FB আইডি সেল" onClick={() => setSubPage('facebook')} />
-                      <ServiceCard isDarkMode={isDarkMode} image={serviceLogos.ig} title="IG আইডি সেল" onClick={() => setSubPage('instagram')} />
-                      <ServiceCard isDarkMode={isDarkMode} image={serviceLogos.smm} title="SMM সার্ভিস" onClick={() => setSubPage('smm')} />
+                      <ServiceCard 
+                        isDarkMode={isDarkMode} 
+                        image={serviceLogos.vpn} 
+                        title="VPN সেল" 
+                        onClick={() => setSubPage('vpn')} 
+                        showStatus={false}
+                      />
+                      <ServiceCard 
+                        isDarkMode={isDarkMode} 
+                        image={serviceLogos.fb} 
+                        title="FB আইডি সেল" 
+                        onClick={() => setSubPage('facebook')} 
+                        showStatus={false}
+                      />
+                      <ServiceCard 
+                        isDarkMode={isDarkMode} 
+                        image={serviceLogos.ig} 
+                        title="IG আইডি সেল" 
+                        onClick={() => setSubPage('instagram')} 
+                        showStatus={false}
+                      />
+                      <ServiceCard 
+                        isDarkMode={isDarkMode} 
+                        image={serviceLogos.smm} 
+                        title="SMM সার্ভিস" 
+                        onClick={() => setSubPage('smm')} 
+                        showStatus={false}
+                      />
                     </div>
                   </div>
                 </>
@@ -2042,21 +2084,25 @@ function ServiceEditor({ title, category, services, setServices }: any) {
                   </div>
                   <p className="text-sm text-primary font-bold">৳{s.price}</p>
                 </div>
-                <div className="flex space-x-1">
-                  <button 
-                    onClick={() => toggleAvailability(s.id)} 
-                    className={cn("p-2 rounded-lg transition-colors", s.isAvailable !== false ? "text-green-500 hover:bg-green-500/10" : "text-red-500 hover:bg-red-500/10")}
-                    title={s.isAvailable !== false ? "Mark as Unavailable" : "Mark as Available"}
-                  >
-                    {s.isAvailable !== false ? <CheckCircle2 className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
-                  </button>
-                  <button onClick={() => startEditing(s)} className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors">
-                    <Edit className="w-4 h-4" />
-                  </button>
-                  <button onClick={() => deleteService(s.id)} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
+                  <div className="flex space-x-1">
+                    <button 
+                      onClick={() => toggleAvailability(s.id)} 
+                      className={cn(
+                        "px-3 py-1 rounded-lg text-[10px] font-bold uppercase transition-all duration-300 border",
+                        s.isAvailable !== false 
+                          ? "bg-green-500/10 text-green-500 border-green-500/20 hover:bg-green-500 hover:text-white" 
+                          : "bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500 hover:text-white"
+                      )}
+                    >
+                      {s.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
+                    </button>
+                    <button onClick={() => startEditing(s)} className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors">
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => deleteService(s.id)} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
               </div>
             )}
           </div>
@@ -2080,7 +2126,7 @@ function NavButton({ active, icon, label, onClick, isDarkMode }: { active: boole
       {active && (
         <motion.div 
           layoutId="nav-active"
-          className="absolute inset-0 bg-primary/10 -z-10"
+          className="absolute w-12 h-12 bg-primary/5 rounded-full -z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
         />
       )}
@@ -2094,15 +2140,16 @@ function NavButton({ active, icon, label, onClick, isDarkMode }: { active: boole
   );
 }
 
-function ServiceCard({ image, title, onClick, isDarkMode }: { image: string, title: string, onClick: () => void, isDarkMode: boolean }) {
+function ServiceCard({ image, title, onClick, isDarkMode, isAvailable = true, showStatus = true }: { image: string, title: string, onClick: () => void, isDarkMode: boolean, isAvailable?: boolean, showStatus?: boolean }) {
   return (
     <button 
       onClick={onClick}
       className={cn(
-        "w-full p-5 rounded-[2rem] flex items-center justify-between transition-all duration-500 hover:translate-y-[-4px] active:scale-[0.98] group",
+        "w-full p-5 rounded-[2rem] flex items-center justify-between transition-all duration-500 hover:translate-y-[-4px] active:scale-[0.98] group relative overflow-hidden",
         isDarkMode 
           ? "glass border-white/5 text-white hover:bg-white/5" 
-          : "bg-white border border-slate-200 text-slate-900 shadow-sm hover:shadow-md"
+          : "bg-white border border-slate-200 text-slate-900 shadow-sm hover:shadow-md",
+        (!isAvailable && showStatus) && "opacity-80 grayscale-[0.5]"
       )}
     >
       <div className="flex items-center space-x-5">
@@ -2110,7 +2157,19 @@ function ServiceCard({ image, title, onClick, isDarkMode }: { image: string, tit
           <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" referrerPolicy="no-referrer" />
         </div>
         <div className="flex flex-col items-start">
-          <span className="font-black text-lg tracking-tight">{title}</span>
+          <div className="flex items-center space-x-2 mb-1">
+            <span className="font-black text-lg tracking-tight">{title}</span>
+            {showStatus && (
+              <span className={cn(
+                "text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-tighter border",
+                isAvailable 
+                  ? "bg-green-500/10 text-green-500 border-green-500/20" 
+                  : "bg-red-500/10 text-red-500 border-red-500/20"
+              )}>
+                {isAvailable ? "এভেলএবেল" : "এভেলএবেল না"}
+              </span>
+            )}
+          </div>
           <span className="text-[10px] uppercase tracking-[0.2em] opacity-40 font-bold">Premium Service</span>
         </div>
       </div>
