@@ -23,6 +23,7 @@ import {
   ChevronRight,
   ArrowRight,
   Settings,
+  Star,
   Users,
   Database,
   Check,
@@ -76,6 +77,7 @@ export default function App() {
   const [developerName, setDeveloperName] = useState('Developer Emon');
   const [developerTelegram, setDeveloperTelegram] = useState('@Devoloper_Emon');
   const [developerPhone, setDeveloperPhone] = useState('+880123456789');
+  const [developerPhoto, setDeveloperPhoto] = useState('https://picsum.photos/seed/dev/100/100');
   const [telegramChannel, setTelegramChannel] = useState('https://t.me/your_admin_id');
 
   const [vpnServices, setVpnServices] = useState<ServiceItem[]>([
@@ -139,6 +141,7 @@ export default function App() {
           setDeveloperName(settingsData.developer_name);
           setDeveloperTelegram(settingsData.developer_telegram);
           setDeveloperPhone(settingsData.developer_phone);
+          setDeveloperPhoto(settingsData.developer_photo || 'https://picsum.photos/seed/dev/100/100');
           setTelegramChannel(settingsData.telegram_channel);
           setVideoLink(settingsData.video_link || 'https://t.me/video_tutorial');
           setAdminSupportLink(settingsData.admin_support_link || 'https://t.me/admin_support');
@@ -160,6 +163,7 @@ export default function App() {
             developer_name: 'Developer Emon',
             developer_telegram: '@Devoloper_Emon',
             developer_phone: '+880123456789',
+            developer_photo: 'https://picsum.photos/seed/dev/100/100',
             telegram_channel: 'https://t.me/your_admin_id',
             video_link: 'https://t.me/video_tutorial',
             admin_support_link: 'https://t.me/admin_support',
@@ -180,6 +184,7 @@ export default function App() {
           setDeveloperName(initialSettings.developer_name);
           setDeveloperTelegram(initialSettings.developer_telegram);
           setDeveloperPhone(initialSettings.developer_phone);
+          setDeveloperPhoto(initialSettings.developer_photo || 'https://picsum.photos/seed/dev/100/100');
           setTelegramChannel(initialSettings.telegram_channel);
           setVideoLink(initialSettings.video_link || 'https://t.me/video_tutorial');
           setAdminSupportLink(initialSettings.admin_support_link || 'https://t.me/admin_support');
@@ -529,16 +534,25 @@ export default function App() {
   return (
     <div className={cn("min-h-screen pb-24 transition-colors duration-300", isDarkMode ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900")}>
       {/* Header */}
-      <header className={cn("sticky top-0 z-40 p-4 flex items-center justify-between shadow-md border-b", isDarkMode ? "bg-slate-900 border-white/5" : "bg-white border-slate-200")}>
-        <div className="flex items-center space-x-2">
-          <div className="w-10 h-10 blue-gradient rounded-lg flex items-center justify-center shadow-lg overflow-hidden">
+      <header className={cn(
+        "sticky top-0 z-40 p-5 flex items-center justify-between backdrop-blur-xl border-b transition-all duration-500", 
+        isDarkMode ? "bg-slate-950/80 border-white/5" : "bg-white/80 border-slate-200"
+      )}>
+        <div className="flex items-center space-x-3 group cursor-pointer">
+          <div className="w-11 h-11 premium-gradient rounded-2xl flex items-center justify-center shadow-2xl overflow-hidden group-hover:scale-105 transition-transform duration-500">
             <img src={appLogo} alt="Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
-          <span className="font-bold text-xl tracking-tight">Strong Agency</span>
+          <div className="flex flex-col">
+            <span className="font-black text-xl tracking-tighter leading-none">Strong Agency</span>
+            <span className="text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold">Premium Panel</span>
+          </div>
         </div>
         <button 
           onClick={toggleTheme}
-          className={cn("p-2 rounded-full transition-all duration-300 hover:scale-110 shadow-sm", isDarkMode ? "bg-slate-800 text-yellow-400" : "bg-slate-100 text-slate-700 border border-slate-200")}
+          className={cn(
+            "w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-500 hover:rotate-12 active:scale-90 shadow-xl border", 
+            isDarkMode ? "bg-slate-900 text-yellow-400 border-white/5" : "bg-white text-slate-700 border-slate-200"
+          )}
         >
           {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
         </button>
@@ -559,32 +573,41 @@ export default function App() {
               
               {subPage === 'vpn' && (
                 <div className="space-y-4">
-                  <h2 className="text-xl font-bold mb-4">VPN সার্ভিস</h2>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-black tracking-tight">VPN সার্ভিস</h2>
+                    <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center">
+                      <Database className="w-5 h-5 text-primary" />
+                    </div>
+                  </div>
                   {vpnServices.map(vpn => (
-                    <div key={vpn.id} className="glass p-4 rounded-2xl flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <img src={vpn.image} alt={vpn.name} className="w-12 h-12 rounded-xl object-cover" referrerPolicy="no-referrer" />
+                    <div key={vpn.id} className={cn(
+                      "p-5 rounded-[2.5rem] flex items-center justify-between transition-all duration-500 hover:translate-y-[-4px]",
+                      isDarkMode ? "glass border-white/5" : "bg-white border border-slate-200 shadow-sm"
+                    )}>
+                      <div className="flex items-center space-x-4">
+                        <div className="relative">
+                          <img src={vpn.image} alt={vpn.name} className="w-14 h-14 rounded-2xl object-cover shadow-lg" referrerPolicy="no-referrer" />
+                          <div className={cn("absolute -top-1 -right-1 w-4 h-4 rounded-full border-2 border-slate-950", vpn.isAvailable !== false ? "bg-green-500" : "bg-red-500")} />
+                        </div>
                         <div>
-                          <div className="flex items-center space-x-2">
-                            <h3 className="font-bold">{vpn.name}</h3>
-                            <span className={cn("text-[10px] px-2.5 py-1 rounded-full font-bold uppercase", vpn.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
-                              {vpn.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
-                            </span>
-                          </div>
-                          <p className="text-sm opacity-70">প্রিমিয়াম একাউন্ট</p>
+                          <h3 className="font-black text-lg tracking-tight leading-none mb-1">{vpn.name}</h3>
+                          <p className="text-[10px] uppercase tracking-widest font-bold opacity-40">Premium Account</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-end">
-                        <span className="font-bold text-primary mb-2">৳{vpn.price}</span>
-                        <div className="flex space-x-2">
-                          <button 
-                            disabled={vpn.isAvailable === false}
-                            onClick={() => handleBuy(vpn)} 
-                            className={cn("px-6 py-2 text-sm rounded-xl text-white font-bold", vpn.isAvailable !== false ? "bg-primary shadow-lg shadow-primary/20" : "bg-slate-500 opacity-50 cursor-not-allowed")}
-                          >
-                            কিনুন
-                          </button>
-                        </div>
+                        <span className="text-xl font-black text-primary tracking-tighter mb-2">৳{vpn.price}</span>
+                        <button 
+                          disabled={vpn.isAvailable === false}
+                          onClick={() => handleBuy(vpn)} 
+                          className={cn(
+                            "px-8 py-2.5 text-sm rounded-2xl text-white font-black transition-all duration-300", 
+                            vpn.isAvailable !== false 
+                              ? "bg-primary shadow-xl shadow-primary/30 hover:scale-105 active:scale-95" 
+                              : "bg-slate-700 opacity-40 cursor-not-allowed"
+                          )}
+                        >
+                          কিনুন
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -593,29 +616,43 @@ export default function App() {
 
               {subPage === 'facebook' && (
                 <div className="space-y-4">
-                  <h2 className="text-xl font-bold mb-4">Facebook ID</h2>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-black tracking-tight">Facebook ID</h2>
+                    <div className="w-10 h-10 rounded-2xl bg-blue-500/10 flex items-center justify-center">
+                      <Send className="w-5 h-5 text-blue-500" />
+                    </div>
+                  </div>
                   {fbServices.map(fb => (
-                    <div key={fb.id} className="glass p-4 rounded-2xl flex items-center justify-between">
-                      <div>
-                        <div className="flex items-center space-x-2">
-                          <h3 className="font-bold">{fb.name}</h3>
-                          <span className={cn("text-[10px] px-2.5 py-1 rounded-full font-bold uppercase", fb.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
-                            {fb.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
-                          </span>
+                    <div key={fb.id} className={cn(
+                      "p-5 rounded-[2.5rem] flex items-center justify-between transition-all duration-500 hover:translate-y-[-4px]",
+                      isDarkMode ? "glass border-white/5" : "bg-white border border-slate-200 shadow-sm"
+                    )}>
+                      <div className="flex items-center space-x-4">
+                        <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center shadow-inner">
+                          <Send className="w-7 h-7 text-blue-500" />
                         </div>
-                        <p className="text-sm opacity-70">পিসি ক্লোন আইডি</p>
+                        <div>
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h3 className="font-black text-lg tracking-tight leading-none">{fb.name}</h3>
+                            <div className={cn("w-2 h-2 rounded-full", fb.isAvailable !== false ? "bg-green-500" : "bg-red-500")} />
+                          </div>
+                          <p className="text-[10px] uppercase tracking-widest font-bold opacity-40">Verified Account</p>
+                        </div>
                       </div>
                       <div className="flex flex-col items-end">
-                        <span className="font-bold text-primary mb-2">৳{fb.price}</span>
-                        <div className="flex space-x-2">
-                          <button 
-                            disabled={fb.isAvailable === false}
-                            onClick={() => handleBuy(fb)} 
-                            className={cn("px-6 py-2 text-sm rounded-xl text-white font-bold", fb.isAvailable !== false ? "bg-primary shadow-lg shadow-primary/20" : "bg-slate-500 opacity-50 cursor-not-allowed")}
-                          >
-                            কিনুন
-                          </button>
-                        </div>
+                        <span className="text-xl font-black text-primary tracking-tighter mb-2">৳{fb.price}</span>
+                        <button 
+                          disabled={fb.isAvailable === false}
+                          onClick={() => handleBuy(fb)} 
+                          className={cn(
+                            "px-8 py-2.5 text-sm rounded-2xl text-white font-black transition-all duration-300", 
+                            fb.isAvailable !== false 
+                              ? "bg-primary shadow-xl shadow-primary/30 hover:scale-105 active:scale-95" 
+                              : "bg-slate-700 opacity-40 cursor-not-allowed"
+                          )}
+                        >
+                          কিনুন
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -624,29 +661,43 @@ export default function App() {
 
               {subPage === 'instagram' && (
                 <div className="space-y-4">
-                  <h2 className="text-xl font-bold mb-4">Instagram ID</h2>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-black tracking-tight">Instagram ID</h2>
+                    <div className="w-10 h-10 rounded-2xl bg-pink-500/10 flex items-center justify-center">
+                      <MessageCircle className="w-5 h-5 text-pink-500" />
+                    </div>
+                  </div>
                   {igServices.map(ig => (
-                    <div key={ig.id} className="glass p-4 rounded-2xl flex items-center justify-between">
-                      <div>
-                        <div className="flex items-center space-x-2">
-                          <h3 className="font-bold">{ig.name}</h3>
-                          <span className={cn("text-[10px] px-2.5 py-1 rounded-full font-bold uppercase", ig.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
-                            {ig.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
-                          </span>
+                    <div key={ig.id} className={cn(
+                      "p-5 rounded-[2.5rem] flex items-center justify-between transition-all duration-500 hover:translate-y-[-4px]",
+                      isDarkMode ? "glass border-white/5" : "bg-white border border-slate-200 shadow-sm"
+                    )}>
+                      <div className="flex items-center space-x-4">
+                        <div className="w-14 h-14 rounded-2xl bg-pink-500/10 flex items-center justify-center shadow-inner">
+                          <MessageCircle className="w-7 h-7 text-pink-500" />
                         </div>
-                        <p className="text-sm opacity-70">ওল্ড আইডি</p>
+                        <div>
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h3 className="font-black text-lg tracking-tight leading-none">{ig.name}</h3>
+                            <div className={cn("w-2 h-2 rounded-full", ig.isAvailable !== false ? "bg-green-500" : "bg-red-500")} />
+                          </div>
+                          <p className="text-[10px] uppercase tracking-widest font-bold opacity-40">Old Account</p>
+                        </div>
                       </div>
                       <div className="flex flex-col items-end">
-                        <span className="font-bold text-primary mb-2">৳{ig.price}</span>
-                        <div className="flex space-x-2">
-                          <button 
-                            disabled={ig.isAvailable === false}
-                            onClick={() => handleBuy(ig)} 
-                            className={cn("px-6 py-2 text-sm rounded-xl text-white font-bold", ig.isAvailable !== false ? "bg-primary shadow-lg shadow-primary/20" : "bg-slate-500 opacity-50 cursor-not-allowed")}
-                          >
-                            কিনুন
-                          </button>
-                        </div>
+                        <span className="text-xl font-black text-primary tracking-tighter mb-2">৳{ig.price}</span>
+                        <button 
+                          disabled={ig.isAvailable === false}
+                          onClick={() => handleBuy(ig)} 
+                          className={cn(
+                            "px-8 py-2.5 text-sm rounded-2xl text-white font-black transition-all duration-300", 
+                            ig.isAvailable !== false 
+                              ? "bg-primary shadow-xl shadow-primary/30 hover:scale-105 active:scale-95" 
+                              : "bg-slate-700 opacity-40 cursor-not-allowed"
+                          )}
+                        >
+                          কিনুন
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -654,24 +705,43 @@ export default function App() {
               )}
 
               {subPage === 'smm' && (
-                <div className="space-y-3">
-                  <h2 className="text-xl font-bold mb-4">SMS/SMM সার্ভিস</h2>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-black tracking-tight">SMM সার্ভিস</h2>
+                    <div className="w-10 h-10 rounded-2xl bg-purple-500/10 flex items-center justify-center">
+                      <ShoppingBag className="w-5 h-5 text-purple-500" />
+                    </div>
+                  </div>
                   {smmServices.map(smm => (
-                    <div key={smm.id} className="glass p-3 rounded-xl flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-medium">{smm.name}</span>
-                        <span className={cn("text-[10px] px-2.5 py-1 rounded-full font-bold uppercase", smm.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
-                          {smm.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
-                        </span>
+                    <div key={smm.id} className={cn(
+                      "p-5 rounded-[2.5rem] flex items-center justify-between transition-all duration-500 hover:translate-y-[-4px]",
+                      isDarkMode ? "glass border-white/5" : "bg-white border border-slate-200 shadow-sm"
+                    )}>
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                          <Plus className="w-6 h-6 text-purple-500" />
+                        </div>
+                        <div>
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h3 className="font-black text-base tracking-tight leading-none">{smm.name}</h3>
+                            <div className={cn("w-2 h-2 rounded-full", smm.isAvailable !== false ? "bg-green-500" : "bg-red-500")} />
+                          </div>
+                          <p className="text-[10px] uppercase tracking-widest font-bold opacity-40">Instant Delivery</p>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <span className="text-primary font-bold">৳{smm.price}</span>
+                      <div className="flex items-center space-x-4">
+                        <span className="text-lg font-black text-primary tracking-tighter">৳{smm.price}</span>
                         <button 
                           disabled={smm.isAvailable === false}
                           onClick={() => handleBuy(smm)} 
-                          className={cn("px-6 py-2 text-white text-sm rounded-xl font-bold flex items-center shadow-lg shadow-primary/20", smm.isAvailable !== false ? "bg-primary" : "bg-slate-500 opacity-50 cursor-not-allowed")}
+                          className={cn(
+                            "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300", 
+                            smm.isAvailable !== false 
+                              ? "bg-primary text-white shadow-lg shadow-primary/20 hover:scale-110 active:scale-90" 
+                              : "bg-slate-700 text-white/40 cursor-not-allowed"
+                          )}
                         >
-                          কিনুন <ArrowRight className="w-4 h-4 ml-1" />
+                          <ArrowRight className="w-5 h-5" />
                         </button>
                       </div>
                     </div>
@@ -690,41 +760,88 @@ export default function App() {
               {activeTab === 'home' && (
                 <>
                   {/* Discount Card */}
-                  <div className="blue-gradient p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
+                  <div className="premium-gradient p-8 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden group">
                     <div className="relative z-10">
-                      <h2 className="text-2xl font-bold mb-1">নোটিশ!</h2>
-                      <p className="opacity-90 text-sm">{appNotice}</p>
+                      <div className="flex items-center space-x-2 mb-3">
+                        <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-md">
+                          <Bell className="w-4 h-4 text-white" />
+                        </div>
+                        <h2 className="text-xl font-black tracking-tight uppercase">অফিসিয়াল নোটিশ</h2>
+                      </div>
+                      <p className="opacity-90 text-sm font-medium leading-relaxed">{appNotice}</p>
                     </div>
-                    <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
+                    <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute -left-10 -top-10 w-32 h-32 bg-blue-400/20 rounded-full blur-2xl" />
                   </div>
 
                   {/* Profile Card */}
-                  <div className="glass p-5 rounded-3xl">
+                  <div className={cn(
+                    "relative overflow-hidden p-6 rounded-[2.5rem] shadow-xl border transition-all duration-500",
+                    isDarkMode ? "glass border-white/5" : "bg-white border-slate-200"
+                  )}>
                     {!profile ? (
-                      <div className="flex flex-col items-center py-4">
-                        <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-3">
-                          <Plus className="text-primary w-8 h-8" />
+                      <div className="flex flex-col items-center py-6">
+                        <div className="w-20 h-20 bg-primary/10 rounded-[2rem] flex items-center justify-center mb-4 border-2 border-dashed border-primary/30">
+                          <Plus className="text-primary w-10 h-10" />
                         </div>
-                        <h3 className="font-bold mb-2">প্রোফাইল নেই</h3>
+                        <h3 className="font-black text-xl mb-2 tracking-tight">প্রোফাইল সেটআপ করুন</h3>
+                        <p className="text-sm opacity-50 mb-6 text-center px-4">আপনার টেলিগ্রাম ইউজারনেম দিয়ে শুরু করুন</p>
                         <button 
                           onClick={() => setShowAddProfile(true)}
-                          className="px-8 py-2 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/30"
+                          className="px-10 py-4 bg-primary text-white rounded-2xl font-black shadow-2xl shadow-primary/40 hover:scale-105 active:scale-95 transition-all duration-300"
                         >
                           অ্যাড প্রোফাইল
                         </button>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <img src={profile.photoUrl} alt="Profile" className="w-14 h-14 rounded-2xl border-2 border-primary/30" referrerPolicy="no-referrer" />
-                          <div>
-                            <h3 className="font-bold text-lg">{profile.displayName}</h3>
-                            <p className="text-xs opacity-60">@{profile.telegramUsername}</p>
+                      <div className="flex flex-col space-y-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-4">
+                            <div className="relative">
+                              <img src={profile.photoUrl} alt="Profile" className="w-16 h-16 rounded-2xl border-2 border-primary/30 shadow-lg object-cover" referrerPolicy="no-referrer" />
+                              <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 border-2 border-slate-950 rounded-full" />
+                            </div>
+                            <div>
+                              <div className="flex items-center space-x-2 mb-1">
+                                <h3 className="font-black text-xl tracking-tight leading-none">{profile.displayName}</h3>
+                                <div className="px-2 py-0.5 bg-primary/10 rounded-full border border-primary/20 flex items-center space-x-1">
+                                  <Star className="w-2.5 h-2.5 text-primary fill-primary" />
+                                  <span className="text-[8px] font-black text-primary uppercase tracking-tighter">Premium</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center space-x-1 opacity-50">
+                                <Send className="w-3 h-3" />
+                                <span className="text-xs font-bold">{profile.telegramUsername}</span>
+                              </div>
+                            </div>
                           </div>
+                          <button 
+                            onClick={() => setShowAdminPanel(true)}
+                            className={cn(
+                              "w-10 h-10 rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90",
+                              isDarkMode ? "bg-white/5 text-white/40" : "bg-slate-100 text-slate-400"
+                            )}
+                          >
+                            <Settings className="w-5 h-5" />
+                          </button>
                         </div>
-                        <div className="text-right">
-                          <p className="text-xs opacity-60 mb-1">ব্যালেন্স</p>
-                          <p className="text-xl font-black text-primary">৳{profile.balance}</p>
+                        
+                        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+                        
+                        <div className="flex items-center justify-between bg-primary/5 p-5 rounded-3xl border border-primary/10">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-black opacity-40 mb-1">বর্তমান ব্যালেন্স</span>
+                            <div className="flex items-baseline space-x-1">
+                              <span className="text-3xl font-black text-primary tracking-tighter">৳{profile.balance}</span>
+                              <span className="text-xs font-bold opacity-40">BDT</span>
+                            </div>
+                          </div>
+                          <button 
+                            onClick={() => setShowAddFund(true)}
+                            className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-xl shadow-primary/30 hover:scale-110 active:scale-90 transition-all duration-300"
+                          >
+                            <Plus className="text-white w-6 h-6" />
+                          </button>
                         </div>
                       </div>
                     )}
@@ -831,7 +948,7 @@ export default function App() {
                       <div className="w-12 h-12 bg-red-500/20 rounded-2xl flex items-center justify-center">
                         <Play className="text-red-500" />
                       </div>
-                      <span className="font-bold">ভিডিও দেখুন</span>
+                      <span className="font-bold">কিভাবে কিনবেন</span>
                     </button>
                     <button 
                       onClick={() => window.open(adminSupportLink, '_blank')}
@@ -852,18 +969,28 @@ export default function App() {
                     <span>Join Our Telegram Channel</span>
                   </button>
 
-                  <div className="animated-border p-[2px] rounded-3xl">
-                    <div className={cn("p-6 rounded-3xl flex flex-col items-center", isDarkMode ? "bg-slate-900" : "bg-white")}>
-                      <img src="https://picsum.photos/seed/dev/100/100" alt="Dev" className="w-20 h-20 rounded-full border-4 border-primary/20 mb-4" />
-                      <h3 className="text-xl font-bold">{developerName}</h3>
-                      <p className="text-primary font-medium mb-4">Full Stack Developer</p>
+                  <div className="animated-border p-[2px] rounded-3xl shadow-xl">
+                    <div className={cn("p-6 rounded-3xl flex flex-col items-center dev-card-gradient", isDarkMode ? "bg-slate-900/80" : "bg-white/80")}>
+                      <img src={developerPhoto} alt="Dev" className="w-24 h-24 rounded-full border-4 border-primary/30 mb-4 object-cover shadow-lg" referrerPolicy="no-referrer" />
+                      <h3 className="text-2xl font-black tracking-tight">{developerName}</h3>
+                      <p className="text-primary font-bold mb-6 px-4 py-1 bg-primary/10 rounded-full text-sm">Full Stack Developer</p>
                       <div className="w-full space-y-3">
-                        <div className="flex items-center justify-between p-3 glass rounded-xl">
-                          <span className="text-sm opacity-60">Telegram</span>
+                        <div className="flex items-center justify-between p-4 glass rounded-2xl">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                              <Send className="w-4 h-4 text-blue-500" />
+                            </div>
+                            <span className="text-sm opacity-60">Telegram</span>
+                          </div>
                           <span className="font-bold">{developerTelegram}</span>
                         </div>
-                        <div className="flex items-center justify-between p-3 glass rounded-xl">
-                          <span className="text-sm opacity-60">Phone</span>
+                        <div className="flex items-center justify-between p-4 glass rounded-2xl">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+                              <MessageCircle className="w-4 h-4 text-green-500" />
+                            </div>
+                            <span className="text-sm opacity-60">Phone</span>
+                          </div>
                           <span className="font-bold">{developerPhone}</span>
                         </div>
                       </div>
@@ -887,8 +1014,11 @@ export default function App() {
       </main>
 
       {/* Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-transparent">
-        <div className="max-w-md mx-auto flex justify-between items-center gap-2">
+      <nav className="fixed bottom-6 left-0 right-0 z-50 px-6">
+        <div className={cn(
+          "max-w-md mx-auto p-2 rounded-[2.5rem] flex justify-between items-center gap-1 shadow-2xl border backdrop-blur-2xl",
+          isDarkMode ? "bg-slate-900/90 border-white/10" : "bg-white/90 border-slate-200"
+        )}>
           <NavButton isDarkMode={isDarkMode} active={activeTab === 'home'} icon={<Home />} label="Home" onClick={() => { setActiveTab('home'); setSubPage(null); }} />
           <NavButton isDarkMode={isDarkMode} active={activeTab === 'wallet'} icon={<Wallet />} label="Wallet" onClick={() => { setActiveTab('wallet'); setSubPage(null); }} />
           <NavButton isDarkMode={isDarkMode} active={activeTab === 'order'} icon={<ShoppingBag />} label="Order" onClick={() => { setActiveTab('order'); setSubPage(null); }} />
@@ -1076,6 +1206,8 @@ export default function App() {
             setDeveloperTelegram={setDeveloperTelegram}
             developerPhone={developerPhone}
             setDeveloperPhone={setDeveloperPhone}
+            developerPhoto={developerPhoto}
+            setDeveloperPhoto={setDeveloperPhoto}
             telegramChannel={telegramChannel}
             setTelegramChannel={setTelegramChannel}
             vpnServices={vpnServices}
@@ -1118,6 +1250,7 @@ function AdminPanel({
   developerName, setDeveloperName,
   developerTelegram, setDeveloperTelegram,
   developerPhone, setDeveloperPhone,
+  developerPhoto, setDeveloperPhoto,
   telegramChannel, setTelegramChannel,
   vpnServices, setVpnServices,
   fbServices, setFbServices,
@@ -1229,6 +1362,7 @@ function AdminPanel({
         developer_name: developerName,
         developer_telegram: developerTelegram,
         developer_phone: developerPhone,
+        developer_photo: developerPhoto,
         telegram_channel: telegramChannel,
         video_link: videoLink,
         admin_support_link: adminSupportLink,
@@ -1280,6 +1414,7 @@ function AdminPanel({
             <AdminInput label="Developer Name" value={developerName} onChange={setDeveloperName} />
             <AdminInput label="Developer Telegram" value={developerTelegram} onChange={setDeveloperTelegram} />
             <AdminInput label="Developer Phone" value={developerPhone} onChange={setDeveloperPhone} />
+            <AdminInput label="Developer Photo URL" value={developerPhoto} onChange={setDeveloperPhoto} />
             <AdminInput label="Telegram Channel Link" value={telegramChannel} onChange={setTelegramChannel} />
             
             <div className="pt-4 border-t border-white/10">
@@ -1566,32 +1701,34 @@ function AdminTabBtn({ active, icon, label, onClick }: any) {
     <button 
       onClick={onClick}
       className={cn(
-        "flex items-center space-x-2 px-4 py-2 rounded-xl whitespace-nowrap transition-all",
-        active ? "bg-primary text-white shadow-lg" : "opacity-60"
+        "flex items-center space-x-2 px-6 py-3 rounded-2xl font-black text-sm transition-all duration-500 whitespace-nowrap",
+        active 
+          ? "bg-primary text-white shadow-xl shadow-primary/30 scale-105" 
+          : "opacity-40 hover:opacity-100"
       )}
     >
-      {React.cloneElement(icon, { className: "w-4 h-4" })}
-      <span className="text-sm font-bold">{label}</span>
+      {React.cloneElement(icon as React.ReactElement, { className: "w-4 h-4" })}
+      <span>{label}</span>
     </button>
   );
 }
 
 function AdminInput({ label, value, onChange, isTextArea }: any) {
   return (
-    <div className="space-y-1">
-      <label className="text-xs font-bold opacity-60 uppercase ml-1">{label}</label>
+    <div className="space-y-2">
+      <label className="text-xs font-black uppercase tracking-widest opacity-40 ml-2">{label}</label>
       {isTextArea ? (
         <textarea 
-          value={value}
+          value={value} 
           onChange={(e) => onChange(e.target.value)}
-          className="w-full p-4 rounded-2xl glass border border-primary/20 outline-none focus:border-primary min-h-[100px]"
+          className="w-full p-5 rounded-[2rem] bg-primary/5 border border-primary/10 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 min-h-[120px] font-medium"
         />
       ) : (
         <input 
           type="text"
-          value={value}
+          value={value} 
           onChange={(e) => onChange(e.target.value)}
-          className="w-full p-4 rounded-2xl glass border border-primary/20 outline-none focus:border-primary"
+          className="w-full p-5 rounded-[2rem] bg-primary/5 border border-primary/10 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 font-medium"
         />
       )}
     </div>
@@ -1844,16 +1981,25 @@ function NavButton({ active, icon, label, onClick, isDarkMode }: { active: boole
     <button 
       onClick={onClick}
       className={cn(
-        "flex-1 flex flex-col items-center py-2 px-1 rounded-2xl transition-all duration-300 shadow-lg",
+        "relative flex-1 flex flex-col items-center py-3 px-1 rounded-2xl transition-all duration-500",
         active 
-          ? "bg-primary text-white scale-105" 
-          : (isDarkMode ? "bg-slate-900 text-white opacity-60" : "bg-white text-slate-900 opacity-60")
+          ? "text-primary scale-110" 
+          : (isDarkMode ? "text-slate-400 hover:text-slate-200" : "text-slate-500 hover:text-slate-900")
       )}
     >
-      <div className={cn("mb-1")}>
-        {React.cloneElement(icon as React.ReactElement, { className: "w-5 h-5" })}
+      {active && (
+        <motion.div 
+          layoutId="nav-active"
+          className="absolute inset-0 bg-primary/10 rounded-2xl -z-10"
+          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+        />
+      )}
+      <div className={cn("mb-1 transition-transform duration-300", active && "scale-110")}>
+        {React.cloneElement(icon as React.ReactElement, { className: "w-6 h-6" })}
       </div>
-      <span className="text-[10px] font-bold uppercase tracking-tighter">{label}</span>
+      <span className={cn("text-[10px] font-bold uppercase tracking-widest transition-all duration-300", active ? "opacity-100" : "opacity-60")}>
+        {label}
+      </span>
     </button>
   );
 }
@@ -1863,20 +2009,26 @@ function ServiceCard({ image, title, onClick, isDarkMode }: { image: string, tit
     <button 
       onClick={onClick}
       className={cn(
-        "w-full p-4 rounded-2xl flex items-center justify-between transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm border",
+        "w-full p-5 rounded-[2rem] flex items-center justify-between transition-all duration-500 hover:translate-y-[-4px] active:scale-[0.98] group",
         isDarkMode 
-          ? "bg-slate-900/50 border-white/5 text-white" 
-          : "bg-white border-slate-200 text-slate-900"
+          ? "glass border-white/5 text-white hover:bg-white/5" 
+          : "bg-white border border-slate-200 text-slate-900 shadow-sm hover:shadow-md"
       )}
     >
-      <div className="flex items-center space-x-4">
-        <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md">
-          <img src={image} alt={title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+      <div className="flex items-center space-x-5">
+        <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-2xl border-2 border-primary/20 group-hover:border-primary/50 transition-colors duration-500">
+          <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" referrerPolicy="no-referrer" />
         </div>
-        <span className="font-bold text-lg">{title}</span>
+        <div className="flex flex-col items-start">
+          <span className="font-black text-lg tracking-tight">{title}</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] opacity-40 font-bold">Premium Service</span>
+        </div>
       </div>
-      <div className={cn("p-2 rounded-full", isDarkMode ? "bg-white/5" : "bg-slate-100")}>
-        <ChevronRight className="w-5 h-5 text-primary" />
+      <div className={cn(
+        "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-primary group-hover:text-white",
+        isDarkMode ? "bg-white/5 text-primary" : "bg-slate-100 text-primary"
+      )}>
+        <ChevronRight className="w-5 h-5" />
       </div>
     </button>
   );
@@ -1887,15 +2039,16 @@ function MethodBtn({ name, color, onClick, image, isDarkMode }: any) {
     <button 
       onClick={onClick}
       className={cn(
-        "p-4 rounded-3xl flex flex-col items-center space-y-3 transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg border",
+        "relative p-5 rounded-[2.5rem] flex flex-col items-center space-y-4 transition-all duration-500 hover:translate-y-[-6px] active:scale-95 shadow-xl border overflow-hidden group",
         color,
         isDarkMode ? "border-white/10" : "border-black/5"
       )}
     >
-      <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-inner overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center shadow-2xl overflow-hidden border-2 border-white/50 group-hover:scale-110 transition-transform duration-500">
         <img src={image} alt={name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
       </div>
-      <span className="font-bold text-sm text-white">{name}</span>
+      <span className="font-black text-xs text-white uppercase tracking-widest">{name}</span>
     </button>
   );
 }
