@@ -76,7 +76,6 @@ export default function App() {
   const [developerName, setDeveloperName] = useState('Developer Emon');
   const [developerTelegram, setDeveloperTelegram] = useState('@Devoloper_Emon');
   const [developerPhone, setDeveloperPhone] = useState('+880123456789');
-  const [developerPhoto, setDeveloperPhoto] = useState('https://picsum.photos/seed/dev/100/100');
   const [telegramChannel, setTelegramChannel] = useState('https://t.me/your_admin_id');
 
   const [vpnServices, setVpnServices] = useState<ServiceItem[]>([
@@ -104,27 +103,22 @@ export default function App() {
   ]);
 
   const [paymentMethods, setPaymentMethods] = useState([
-    { id: 'bkash', name: 'Bkash', number: '01781099407', logo: 'https://i.postimg.cc/3wrXy5mM/images-(1).png', color: 'bg-pink-500' },
-    { id: 'nagad', name: 'Nagad', number: '01800000000', logo: 'https://picsum.photos/seed/nagad/100/100', color: 'bg-orange-500' },
-    { id: 'rocket', name: 'Rocket', number: '01900000000', logo: 'https://picsum.photos/seed/rocket/100/100', color: 'bg-purple-600' },
-    { id: 'binance', name: 'Binance', number: 'TXXXXXXXXXXXX', logo: 'https://picsum.photos/seed/binance/100/100', color: 'bg-yellow-500' },
+    { id: 'bkash', name: 'Bkash', number: '01781099407', logo: 'https://i.postimg.cc/hPy9vYjH/OIP.webp', color: 'bg-pink-500' },
+    { id: 'nagad', name: 'Nagad', number: '01883336231', logo: 'https://i.postimg.cc/Vv4HdFr3/OIP-(1).webp', color: 'bg-orange-500' },
+    { id: 'rocket', name: 'Rocket', number: '01883336231', logo: 'https://i.postimg.cc/wvgVLmpT/bb265ad9a619874bbb6e091e6f6c2f2b-rockets-bank.jpg', color: 'bg-purple-600' },
+    { id: 'binance', name: 'Binance', number: 'Coming Soon', logo: 'https://i.postimg.cc/bJZQQHBR/download-(1).webp', color: 'bg-yellow-500' },
   ]);
 
   // Customizable Image URLs (Mocked)
   const [appLogo, setAppLogo] = useState('https://picsum.photos/seed/store/100/100');
   const [videoLink, setVideoLink] = useState('https://t.me/video_tutorial');
   const [adminSupportLink, setAdminSupportLink] = useState('https://t.me/admin_support');
+  const [developerPhoto, setDeveloperPhoto] = useState('https://i.postimg.cc/Hs0cfhDV/Whats-App-Image-2026-03-31-at-8-53-46-PM.jpg');
   const [serviceLogos, setServiceLogos] = useState({
     vpn: 'https://picsum.photos/seed/vpnicon/100/100',
     fb: 'https://picsum.photos/seed/fbicon/100/100',
     ig: 'https://picsum.photos/seed/igicon/100/100',
     smm: 'https://picsum.photos/seed/smmicon/100/100'
-  });
-  const [paymentLogos, setPaymentLogos] = useState({
-    Bkash: 'https://i.postimg.cc/3wrXy5mM/images-(1).png',
-    Nagad: 'https://picsum.photos/seed/nagad/100/100',
-    Rocket: 'https://picsum.photos/seed/rocket/100/100',
-    Binance: 'https://picsum.photos/seed/binance/100/100'
   });
 
   const isAdmin = profile?.telegramUsername === developerTelegram;
@@ -140,7 +134,7 @@ export default function App() {
           setDeveloperName(settingsData.developer_name);
           setDeveloperTelegram(settingsData.developer_telegram);
           setDeveloperPhone(settingsData.developer_phone);
-          setDeveloperPhoto(settingsData.developer_photo || 'https://picsum.photos/seed/dev/100/100');
+          setDeveloperPhoto(settingsData.developer_photo || 'https://i.postimg.cc/Hs0cfhDV/Whats-App-Image-2026-03-31-at-8-53-46-PM.jpg');
           setTelegramChannel(settingsData.telegram_channel);
           setVideoLink(settingsData.video_link || 'https://t.me/video_tutorial');
           setAdminSupportLink(settingsData.admin_support_link || 'https://t.me/admin_support');
@@ -150,7 +144,31 @@ export default function App() {
             ig: settingsData.ig_logo || 'https://picsum.photos/seed/igicon/100/100',
             smm: settingsData.smm_logo || 'https://picsum.photos/seed/smmicon/100/100'
           });
-          if (settingsData.payment_methods) {
+
+          // Force update to new permanent links if they are the old placeholders
+          const isOldPlaceholder = 
+            !settingsData.payment_methods || 
+            settingsData.payment_methods[0]?.number === '01700000000' ||
+            settingsData.developer_photo?.includes('picsum.photos/seed/dev');
+
+          if (isOldPlaceholder) {
+            const newPaymentMethods = [
+              { id: 'bkash', name: 'Bkash', number: '01781099407', logo: 'https://i.postimg.cc/hPy9vYjH/OIP.webp', color: 'bg-pink-500' },
+              { id: 'nagad', name: 'Nagad', number: '01883336231', logo: 'https://i.postimg.cc/Vv4HdFr3/OIP-(1).webp', color: 'bg-orange-500' },
+              { id: 'rocket', name: 'Rocket', number: '01883336231', logo: 'https://i.postimg.cc/wvgVLmpT/bb265ad9a619874bbb6e091e6f6c2f2b-rockets-bank.jpg', color: 'bg-purple-600' },
+              { id: 'binance', name: 'Binance', number: 'Coming Soon', logo: 'https://i.postimg.cc/bJZQQHBR/download-(1).webp', color: 'bg-yellow-500' },
+            ];
+            const newDevPhoto = 'https://i.postimg.cc/Hs0cfhDV/Whats-App-Image-2026-03-31-at-8-53-46-PM.jpg';
+            
+            setPaymentMethods(newPaymentMethods);
+            setDeveloperPhoto(newDevPhoto);
+            
+            // Update database to match
+            await supabase.from('settings').update({ 
+              payment_methods: newPaymentMethods,
+              developer_photo: newDevPhoto
+            }).eq('id', 1);
+          } else if (settingsData.payment_methods) {
             setPaymentMethods(settingsData.payment_methods);
           }
         } else {
@@ -162,7 +180,7 @@ export default function App() {
             developer_name: 'Developer Emon',
             developer_telegram: '@Devoloper_Emon',
             developer_phone: '+880123456789',
-            developer_photo: 'https://picsum.photos/seed/dev/100/100',
+            developer_photo: 'https://i.postimg.cc/Hs0cfhDV/Whats-App-Image-2026-03-31-at-8-53-46-PM.jpg',
             telegram_channel: 'https://t.me/your_admin_id',
             video_link: 'https://t.me/video_tutorial',
             admin_support_link: 'https://t.me/admin_support',
@@ -171,10 +189,10 @@ export default function App() {
             ig_logo: 'https://picsum.photos/seed/igicon/100/100',
             smm_logo: 'https://picsum.photos/seed/smmicon/100/100',
             payment_methods: [
-              { id: 'bkash', name: 'Bkash', number: '01700000000', logo: 'https://picsum.photos/seed/bkash/100/100', color: 'bg-pink-500' },
-              { id: 'nagad', name: 'Nagad', number: '01800000000', logo: 'https://picsum.photos/seed/nagad/100/100', color: 'bg-orange-500' },
-              { id: 'rocket', name: 'Rocket', number: '01900000000', logo: 'https://picsum.photos/seed/rocket/100/100', color: 'bg-purple-600' },
-              { id: 'binance', name: 'Binance', number: 'TXXXXXXXXXXXX', logo: 'https://picsum.photos/seed/binance/100/100', color: 'bg-yellow-500' },
+              { id: 'bkash', name: 'Bkash', number: '01781099407', logo: 'https://i.postimg.cc/hPy9vYjH/OIP.webp', color: 'bg-pink-500' },
+              { id: 'nagad', name: 'Nagad', number: '01883336231', logo: 'https://i.postimg.cc/Vv4HdFr3/OIP-(1).webp', color: 'bg-orange-500' },
+              { id: 'rocket', name: 'Rocket', number: '01883336231', logo: 'https://i.postimg.cc/wvgVLmpT/bb265ad9a619874bbb6e091e6f6c2f2b-rockets-bank.jpg', color: 'bg-purple-600' },
+              { id: 'binance', name: 'Binance', number: 'Coming Soon', logo: 'https://i.postimg.cc/bJZQQHBR/download-(1).webp', color: 'bg-yellow-500' },
             ]
           };
           await supabase.from('settings').insert([initialSettings]);
@@ -928,21 +946,21 @@ export default function App() {
                       <ServiceCard 
                         isDarkMode={isDarkMode} 
                         image={serviceLogos.vpn} 
-                        title="VPN সেল" 
+                        title="VPN/APP" 
                         onClick={() => setSubPage('vpn')} 
                         showStatus={false}
                       />
                       <ServiceCard 
                         isDarkMode={isDarkMode} 
                         image={serviceLogos.fb} 
-                        title="FB আইডি সেল" 
+                        title="FACEBOOK ID" 
                         onClick={() => setSubPage('facebook')} 
                         showStatus={false}
                       />
                       <ServiceCard 
                         isDarkMode={isDarkMode} 
                         image={serviceLogos.ig} 
-                        title="IG আইডি সেল" 
+                        title="INSTAGRAM ID" 
                         onClick={() => setSubPage('instagram')} 
                         showStatus={false}
                       />
@@ -1412,6 +1430,7 @@ function AdminPanel({
   serviceLogos, setServiceLogos
 }: any) {
   const [adminTab, setAdminTab] = useState<'settings' | 'services' | 'payments' | 'orders' | 'users'>('settings');
+  const [loading, setLoading] = useState(false);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -1500,7 +1519,8 @@ function AdminPanel({
 
   const saveSettings = async () => {
     try {
-      const { error } = await supabase.from('settings').upsert([{
+      setLoading(true);
+      const updateData: any = {
         id: 1,
         app_notice: appNotice,
         app_logo: appLogo,
@@ -1516,13 +1536,23 @@ function AdminPanel({
         fb_logo: serviceLogos.fb,
         ig_logo: serviceLogos.ig,
         smm_logo: serviceLogos.smm
-      }]);
+      };
 
-      if (error) throw error;
+      const { error } = await supabase.from('settings').upsert([updateData]);
+
+      if (error) {
+        console.error("Supabase Upsert Error:", error);
+        // If upsert fails, try a simple update for common fields
+        const { error: updateError } = await supabase.from('settings').update(updateData).eq('id', 1);
+        if (updateError) throw updateError;
+      }
+
       alert("সেটিংস সফলভাবে সেভ হয়েছে!");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving settings:", error);
-      alert("সেটিংস সেভ করতে সমস্যা হয়েছে।");
+      alert(`সেটিংস সেভ করতে সমস্যা হয়েছে: ${error.message || 'Unknown error'}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -1573,27 +1603,28 @@ function AdminPanel({
             <div className="pt-4 border-t border-white/10">
               <h3 className="font-bold text-sm opacity-60 mb-3 uppercase tracking-wider">Service Logos (Home Page)</h3>
               <div className="grid grid-cols-1 gap-3">
-                <AdminInput label="VPN Logo URL" value={serviceLogos.vpn} onChange={(val) => setServiceLogos(prev => ({ ...prev, vpn: val }))} />
-                <AdminInput label="Facebook Logo URL" value={serviceLogos.fb} onChange={(val) => setServiceLogos(prev => ({ ...prev, fb: val }))} />
-                <AdminInput label="Instagram Logo URL" value={serviceLogos.ig} onChange={(val) => setServiceLogos(prev => ({ ...prev, ig: val }))} />
+                <AdminInput label="VPN/APP Logo URL" value={serviceLogos.vpn} onChange={(val) => setServiceLogos(prev => ({ ...prev, vpn: val }))} />
+                <AdminInput label="FACEBOOK ID Logo URL" value={serviceLogos.fb} onChange={(val) => setServiceLogos(prev => ({ ...prev, fb: val }))} />
+                <AdminInput label="INSTAGRAM ID Logo URL" value={serviceLogos.ig} onChange={(val) => setServiceLogos(prev => ({ ...prev, ig: val }))} />
                 <AdminInput label="SMM Logo URL" value={serviceLogos.smm} onChange={(val) => setServiceLogos(prev => ({ ...prev, smm: val }))} />
               </div>
             </div>
 
             <button 
               onClick={saveSettings}
-              className="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg mt-4"
+              disabled={loading}
+              className={cn("w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg mt-4", loading && "opacity-50 cursor-not-allowed")}
             >
-              Save All Settings
+              {loading ? "Saving..." : "Save All Settings"}
             </button>
           </div>
         )}
 
         {adminTab === 'services' && (
           <div className="space-y-8">
-            <ServiceEditor title="VPN Services" category="vpn" services={vpnServices} setServices={setVpnServices} />
-            <ServiceEditor title="Facebook Services" category="facebook" services={fbServices} setServices={setFbServices} />
-            <ServiceEditor title="Instagram Services" category="instagram" services={igServices} setServices={setIgServices} />
+            <ServiceEditor title="VPN/APP Services" category="vpn" services={vpnServices} setServices={setVpnServices} />
+            <ServiceEditor title="FACEBOOK ID Services" category="facebook" services={fbServices} setServices={setFbServices} />
+            <ServiceEditor title="INSTAGRAM ID Services" category="instagram" services={igServices} setServices={setIgServices} />
             <ServiceEditor title="SMS/SMM সার্ভিস" category="smm" services={smmServices} setServices={setSmmServices} />
           </div>
         )}
@@ -1632,9 +1663,10 @@ function AdminPanel({
             ))}
             <button 
               onClick={saveSettings}
-              className="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg mt-4"
+              disabled={loading}
+              className={cn("w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg mt-4", loading && "opacity-50 cursor-not-allowed")}
             >
-              Save Payment Methods
+              {loading ? "Saving..." : "Save Payment Methods"}
             </button>
           </div>
         )}
