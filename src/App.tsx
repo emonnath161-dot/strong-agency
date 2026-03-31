@@ -104,7 +104,7 @@ export default function App() {
   ]);
 
   const [paymentMethods, setPaymentMethods] = useState([
-    { id: 'bkash', name: 'Bkash', number: '01700000000', logo: 'bkash.png', color: 'bg-pink-500' },
+    { id: 'bkash', name: 'Bkash', number: '01781099407', logo: 'https://i.postimg.cc/3wrXy5mM/images-(1).png', color: 'bg-pink-500' },
     { id: 'nagad', name: 'Nagad', number: '01800000000', logo: 'https://picsum.photos/seed/nagad/100/100', color: 'bg-orange-500' },
     { id: 'rocket', name: 'Rocket', number: '01900000000', logo: 'https://picsum.photos/seed/rocket/100/100', color: 'bg-purple-600' },
     { id: 'binance', name: 'Binance', number: 'TXXXXXXXXXXXX', logo: 'https://picsum.photos/seed/binance/100/100', color: 'bg-yellow-500' },
@@ -121,7 +121,7 @@ export default function App() {
     smm: 'https://picsum.photos/seed/smmicon/100/100'
   });
   const [paymentLogos, setPaymentLogos] = useState({
-    Bkash: 'bkash.png',
+    Bkash: 'https://i.postimg.cc/3wrXy5mM/images-(1).png',
     Nagad: 'https://picsum.photos/seed/nagad/100/100',
     Rocket: 'https://picsum.photos/seed/rocket/100/100',
     Binance: 'https://picsum.photos/seed/binance/100/100'
