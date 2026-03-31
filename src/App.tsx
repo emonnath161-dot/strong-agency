@@ -69,14 +69,10 @@ export default function App() {
   const [showAdminPanel, setShowAdminPanel] = useState(false);
 
   // User Management
-  const [allUsers, setAllUsers] = useState<UserProfile[]>([
-    { telegramUsername: '@Devoloper_Emon', displayName: 'Developer Emon', photoUrl: 'https://ui-avatars.com/api/?name=Emon&background=random', balance: 1000 },
-    { telegramUsername: '@user1', displayName: 'User One', photoUrl: 'https://ui-avatars.com/api/?name=U1&background=random', balance: 500 },
-    { telegramUsername: '@user2', displayName: 'User Two', photoUrl: 'https://ui-avatars.com/api/?name=U2&background=random', balance: 200 },
-  ]);
+  const [allUsers, setAllUsers] = useState<UserProfile[]>([]);
 
   // App Settings & Data (Editable by Admin)
-  const [appNotice, setAppNotice] = useState('ঈদ ধামাকা অফার! সব সার্ভিসে ২০% পর্যন্ত ডিসকাউন্ট।');
+  const [appNotice, setAppNotice] = useState('Strong Agency-এ স্বাগতম!');
   const [developerName, setDeveloperName] = useState('Developer Emon');
   const [developerTelegram, setDeveloperTelegram] = useState('@Devoloper_Emon');
   const [developerPhone, setDeveloperPhone] = useState('+880123456789');
@@ -246,8 +242,20 @@ export default function App() {
           const savedUser = localStorage.getItem('strongagency_user');
           if (savedUser) {
             const matchedUser = mappedUsers.find((u: any) => u.telegramUsername === savedUser);
-            if (matchedUser) setProfile(matchedUser);
+            if (matchedUser) {
+              setProfile(matchedUser);
+            } else {
+              // User was in localstorage but not in DB (maybe deleted?)
+              localStorage.removeItem('strongagency_user');
+              setShowAddProfile(true);
+            }
+          } else {
+            // No user in localstorage, force profile setup
+            setShowAddProfile(true);
           }
+        } else {
+          // No users in DB at all
+          setShowAddProfile(true);
         }
 
         // Fetch Orders & Transactions
@@ -463,6 +471,10 @@ export default function App() {
 
   const handleAddFund = () => {
     if (!fundAmount || isNaN(Number(fundAmount))) return;
+    if (Number(fundAmount) < 50) {
+      alert("সর্বনিম্ন ৫০ টাকা এড করতে হবে।");
+      return;
+    }
     setPaymentStep(2);
   };
 
@@ -1217,8 +1229,9 @@ export default function App() {
                     placeholder="৳0.00"
                     value={fundAmount}
                     onChange={(e) => setFundAmount(e.target.value)}
-                    className="w-full p-4 text-2xl font-bold rounded-2xl glass border-2 border-primary/20 mb-6 outline-none focus:border-primary text-center"
+                    className="w-full p-4 text-2xl font-bold rounded-2xl glass border-2 border-primary/20 mb-2 outline-none focus:border-primary text-center"
                   />
+                  <p className="text-xs text-red-500 font-bold mb-6 text-center">সর্বনিম্ন ৫০ টাকা এড করতে হবে</p>
                   <button 
                     onClick={handleAddFund}
                     className="w-full py-4 blue-gradient text-white rounded-2xl font-bold"
@@ -1598,27 +1611,21 @@ function AdminPanel({
                   label="Name" 
                   value={method.name} 
                   onChange={(val: string) => {
-                    const newMethods = [...paymentMethods];
-                    newMethods[idx].name = val;
-                    setPaymentMethods(newMethods);
+                    setPaymentMethods(paymentMethods.map((m: any, i: number) => i === idx ? { ...m, name: val } : m));
                   }} 
                 />
                 <AdminInput 
                   label="Logo URL" 
                   value={method.logo} 
                   onChange={(val: string) => {
-                    const newMethods = [...paymentMethods];
-                    newMethods[idx].logo = val;
-                    setPaymentMethods(newMethods);
+                    setPaymentMethods(paymentMethods.map((m: any, i: number) => i === idx ? { ...m, logo: val } : m));
                   }} 
                 />
                 <AdminInput 
                   label="Number/Address" 
                   value={method.number} 
                   onChange={(val: string) => {
-                    const newMethods = [...paymentMethods];
-                    newMethods[idx].number = val;
-                    setPaymentMethods(newMethods);
+                    setPaymentMethods(paymentMethods.map((m: any, i: number) => i === idx ? { ...m, number: val } : m));
                   }} 
                 />
               </div>
