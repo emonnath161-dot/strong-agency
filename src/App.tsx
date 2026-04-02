@@ -73,9 +73,9 @@ export default function App() {
 
   // App Settings & Data (Editable by Admin)
   const [appNotice, setAppNotice] = useState('Strong Agency-এ স্বাগতম!');
-  const [developerName, setDeveloperName] = useState('Developer Emon');
-  const [developerTelegram, setDeveloperTelegram] = useState('@Devoloper_Emon');
-  const [developerPhone, setDeveloperPhone] = useState('+880123456789');
+  const [developerName, setDeveloperName] = useState('Strong Ad Agency');
+  const [developerTelegram, setDeveloperTelegram] = useState('@strong_agency_admin');
+  const [developerPhone, setDeveloperPhone] = useState('+8801410503003');
   const [telegramChannel, setTelegramChannel] = useState('https://t.me/your_admin_id');
 
   const [vpnServices, setVpnServices] = useState<ServiceItem[]>([
@@ -112,8 +112,8 @@ export default function App() {
   // Customizable Image URLs (Mocked)
   const [appLogo, setAppLogo] = useState('https://picsum.photos/seed/store/100/100');
   const [videoLink, setVideoLink] = useState('https://t.me/video_tutorial');
-  const [adminSupportLink, setAdminSupportLink] = useState('https://t.me/admin_support');
-  const [developerPhoto, setDeveloperPhoto] = useState('https://i.postimg.cc/Hs0cfhDV/Whats-App-Image-2026-03-31-at-8-53-46-PM.jpg');
+  const [adminSupportLink, setAdminSupportLink] = useState('https://t.me/strong_agency_admin');
+  const [developerPhoto, setDeveloperPhoto] = useState('https://i.postimg.cc/3rcjRNr5/20260328-020913.jpg');
   const [serviceLogos, setServiceLogos] = useState({
     vpn: 'https://picsum.photos/seed/vpnicon/100/100',
     fb: 'https://picsum.photos/seed/fbicon/100/100',
@@ -134,10 +134,10 @@ export default function App() {
           setDeveloperName(settingsData.developer_name);
           setDeveloperTelegram(settingsData.developer_telegram);
           setDeveloperPhone(settingsData.developer_phone);
-          setDeveloperPhoto(settingsData.developer_photo || 'https://i.postimg.cc/Hs0cfhDV/Whats-App-Image-2026-03-31-at-8-53-46-PM.jpg');
+          setDeveloperPhoto(settingsData.developer_photo || 'https://i.postimg.cc/3rcjRNr5/20260328-020913.jpg');
           setTelegramChannel(settingsData.telegram_channel);
           setVideoLink(settingsData.video_link || 'https://t.me/video_tutorial');
-          setAdminSupportLink(settingsData.admin_support_link || 'https://t.me/admin_support');
+          setAdminSupportLink(settingsData.admin_support_link || 'https://t.me/strong_agency_admin');
           setServiceLogos({
             vpn: settingsData.vpn_logo || 'https://picsum.photos/seed/vpnicon/100/100',
             fb: settingsData.fb_logo || 'https://picsum.photos/seed/fbicon/100/100',
@@ -149,7 +149,8 @@ export default function App() {
           const isOldPlaceholder = 
             !settingsData.payment_methods || 
             settingsData.payment_methods[0]?.number === '01700000000' ||
-            settingsData.developer_photo?.includes('picsum.photos/seed/dev');
+            settingsData.developer_photo?.includes('picsum.photos/seed/dev') ||
+            settingsData.developer_telegram === '@Devoloper_Emon';
 
           if (isOldPlaceholder) {
             const newPaymentMethods = [
@@ -158,15 +159,27 @@ export default function App() {
               { id: 'rocket', name: 'Rocket', number: '01883336231', logo: 'https://i.postimg.cc/wvgVLmpT/bb265ad9a619874bbb6e091e6f6c2f2b-rockets-bank.jpg', color: 'bg-purple-600' },
               { id: 'binance', name: 'Binance', number: 'Coming Soon', logo: 'https://i.postimg.cc/bJZQQHBR/download-(1).webp', color: 'bg-yellow-500' },
             ];
-            const newDevPhoto = 'https://i.postimg.cc/Hs0cfhDV/Whats-App-Image-2026-03-31-at-8-53-46-PM.jpg';
+            const newDevPhoto = 'https://i.postimg.cc/3rcjRNr5/20260328-020913.jpg';
+            const newDevName = 'Strong Ad Agency';
+            const newDevTelegram = '@strong_agency_admin';
+            const newDevPhone = '+8801410503003';
+            const newAdminSupport = 'https://t.me/strong_agency_admin';
             
             setPaymentMethods(newPaymentMethods);
             setDeveloperPhoto(newDevPhoto);
+            setDeveloperName(newDevName);
+            setDeveloperTelegram(newDevTelegram);
+            setDeveloperPhone(newDevPhone);
+            setAdminSupportLink(newAdminSupport);
             
             // Update database to match
             await supabase.from('settings').update({ 
               payment_methods: newPaymentMethods,
-              developer_photo: newDevPhoto
+              developer_photo: newDevPhoto,
+              developer_name: newDevName,
+              developer_telegram: newDevTelegram,
+              developer_phone: newDevPhone,
+              admin_support_link: newAdminSupport
             }).eq('id', 1);
           } else if (settingsData.payment_methods) {
             setPaymentMethods(settingsData.payment_methods);
@@ -177,13 +190,13 @@ export default function App() {
             id: 1,
             app_notice: 'Strong Agency-এ স্বাগতম!',
             app_logo: 'https://picsum.photos/seed/store/100/100',
-            developer_name: 'Developer Emon',
-            developer_telegram: '@Devoloper_Emon',
-            developer_phone: '+880123456789',
-            developer_photo: 'https://i.postimg.cc/Hs0cfhDV/Whats-App-Image-2026-03-31-at-8-53-46-PM.jpg',
+            developer_name: 'Strong Ad Agency',
+            developer_telegram: '@strong_agency_admin',
+            developer_phone: '+8801410503003',
+            developer_photo: 'https://i.postimg.cc/3rcjRNr5/20260328-020913.jpg',
             telegram_channel: 'https://t.me/your_admin_id',
             video_link: 'https://t.me/video_tutorial',
-            admin_support_link: 'https://t.me/admin_support',
+            admin_support_link: 'https://t.me/strong_agency_admin',
             vpn_logo: 'https://picsum.photos/seed/vpnicon/100/100',
             fb_logo: 'https://picsum.photos/seed/fbicon/100/100',
             ig_logo: 'https://picsum.photos/seed/igicon/100/100',
