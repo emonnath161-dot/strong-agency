@@ -50,7 +50,7 @@ function cn(...inputs: ClassValue[]) {
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'home' | 'wallet' | 'order' | 'help'>('home');
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [showAddProfile, setShowAddProfile] = useState(false);
   const [tgUsernameInput, setTgUsernameInput] = useState('');
@@ -589,7 +589,7 @@ export default function App() {
   }
 
   return (
-    <div className={cn("min-h-screen pb-24 transition-colors duration-300", isDarkMode ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900")}>
+    <div className={cn("min-h-screen pb-24 transition-colors duration-300", isDarkMode ? "dark bg-slate-950 text-white" : "bg-slate-50 text-slate-900")}>
       {/* Header */}
       <header className={cn(
         "sticky top-0 z-40 p-5 flex items-center justify-between backdrop-blur-xl border-b transition-all duration-500", 
@@ -653,7 +653,7 @@ export default function App() {
                               ? "bg-green-500/10 text-green-500 border-green-500/20" 
                               : "bg-red-500/10 text-red-500 border-red-500/20"
                           )}>
-                            {vpn.isAvailable !== false ? "এভেলএবেল" : "এভেলএবেল না"}
+                            {vpn.isAvailable !== false ? "Available" : "Stock Out"}
                           </div>
                         </div>
                       </div>
@@ -702,7 +702,7 @@ export default function App() {
                               ? "bg-green-500/10 text-green-500 border-green-500/20" 
                               : "bg-red-500/10 text-red-500 border-red-500/20"
                           )}>
-                            {fb.isAvailable !== false ? "এভেলএবেল" : "এভেলএবেল না"}
+                            {fb.isAvailable !== false ? "Available" : "Stock Out"}
                           </div>
                         </div>
                       </div>
@@ -751,7 +751,7 @@ export default function App() {
                               ? "bg-green-500/10 text-green-500 border-green-500/20" 
                               : "bg-red-500/10 text-red-500 border-red-500/20"
                           )}>
-                            {ig.isAvailable !== false ? "এভেলএবেল" : "এভেলএবেল না"}
+                            {ig.isAvailable !== false ? "Available" : "Stock Out"}
                           </div>
                         </div>
                       </div>
@@ -800,7 +800,7 @@ export default function App() {
                               ? "bg-green-500/10 text-green-500 border-green-500/20" 
                               : "bg-red-500/10 text-red-500 border-red-500/20"
                           )}>
-                            {smm.isAvailable !== false ? "এভেলএবেল" : "এভেলএবেল না"}
+                            {smm.isAvailable !== false ? "Available" : "Stock Out"}
                           </div>
                         </div>
                       </div>
@@ -941,7 +941,7 @@ export default function App() {
 
                   {/* Services */}
                   <div>
-                    <p className="text-sm font-bold opacity-60 mb-4 uppercase tracking-widest">অ্যাভেলেবেল সার্ভিস</p>
+                    <p className="text-sm font-bold opacity-60 mb-4 uppercase tracking-widest">Available Services</p>
                     <div className="space-y-3">
                       <ServiceCard 
                         isDarkMode={isDarkMode} 
@@ -1561,7 +1561,7 @@ function AdminPanel({
       initial={{ opacity: 0, y: '100%' }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: '100%' }}
-      className={cn("fixed inset-0 z-[80] flex flex-col", isDarkMode ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900")}
+      className={cn("fixed inset-0 z-[80] flex flex-col", isDarkMode ? "dark bg-slate-950 text-white" : "bg-slate-50 text-slate-900")}
     >
       <header className={cn("p-4 flex items-center justify-between border-b", isDarkMode ? "bg-slate-900 border-white/5" : "bg-white border-slate-200")}>
         <div className="flex items-center space-x-2">
@@ -2118,7 +2118,7 @@ function ServiceEditor({ title, category, services, setServices }: any) {
                   <div className="flex items-center space-x-2">
                     <p className="font-bold">{s.name}</p>
                     <span className={cn("text-[8px] px-1.5 py-0.5 rounded-full font-bold uppercase", s.isAvailable !== false ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-500")}>
-                      {s.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
+                      {s.isAvailable !== false ? 'Available' : 'Stock Out'}
                     </span>
                   </div>
                   <p className="text-sm text-primary font-bold">৳{s.price}</p>
@@ -2133,7 +2133,7 @@ function ServiceEditor({ title, category, services, setServices }: any) {
                           : "bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500 hover:text-white"
                       )}
                     >
-                      {s.isAvailable !== false ? 'অ্যাভেলেবেল' : 'অ্যাভেলেবেল নেই'}
+                      {s.isAvailable !== false ? 'Available' : 'Stock Out'}
                     </button>
                     <button onClick={() => startEditing(s)} className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors">
                       <Edit className="w-4 h-4" />
@@ -2205,7 +2205,7 @@ function ServiceCard({ image, title, onClick, isDarkMode, isAvailable = true, sh
                   ? "bg-green-500/10 text-green-500 border-green-500/20" 
                   : "bg-red-500/10 text-red-500 border-red-500/20"
               )}>
-                {isAvailable ? "এভেলএবেল" : "এভেলএবেল না"}
+                {isAvailable ? "Available" : "Stock Out"}
               </span>
             )}
           </div>
